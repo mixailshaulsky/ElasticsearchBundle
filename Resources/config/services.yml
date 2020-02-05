@@ -24,7 +24,7 @@ services:
     ONGR\ElasticsearchBundle\Mapping\Converter: ~
 
     ONGR\ElasticsearchBundle\Mapping\DocumentParser:
-        arguments: ["@ongr.esb.cache_reader", "@ongr.esb.cache", "%ongr.esb.analysis%"]
+        arguments: ["@ongr.esb.cache_reader", "@ongr.esb.cache", "%ongr.esb.analysis%", "%ongr.esb.similarity%"]
 
     ONGR\ElasticsearchBundle\Profiler\Handler\CollectionHandler:
         public: false

@@ -1,13 +1,17 @@
 {
-    "name": "ongr/elasticsearch-bundle",
+    "name": "mixailshaulsky/elasticsearch-bundle",
     "description": "Elasticsearch bundle for Symfony.",
     "type": "symfony-bundle",
-    "homepage": "http://ongr.io",
+    "homepage": "https://shaulsky.dev",
     "license": "MIT",
     "authors": [
         {
             "name": "ONGR team",
             "homepage": "http://www.ongr.io"
+        },
+        {
+            "name": "Mikhail Shaulsky",
+            "homepage": "https://shaulsky.dev"
         }
     ],
     "require": {

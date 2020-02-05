@@ -137,4 +137,46 @@ class DocumentParserTest extends TestCase
 
         $this->assertEquals($expected, $analysis);
     }
+
+    public function testGetSimilarityConfig()
+    {
+        // Global similarity settings used for this test, usually set in the bundle configuration
+        // sets custom similarity
+        $config_similarity = [
+            'similarity' => [
+                'my_custom_similarity' => [
+                    'type' => 'DFR',
+                    'basic_model' => 'g',
+                    'after_effect' => 'l',
+                    'normalization' => 'h2',
+                    'normalization.h2.c' => '3.0',
+                ],
+                'my_unused_similarity' => [
+                    'type' => 'FFR',
+                    'basic_model' => 'g',
+                    'after_effect' => 'l',
+                    'normalization' => 'h3',
+                    'normalization.h2.c' => '3.0',
+                ],
+            ],
+        ];
+
+        $parser = new DocumentParser(new AnnotationReader(), $this->createMock(Cache::class), [], $config_similarity);
+        $similarity = $parser->getSimilarityConfig(new \ReflectionClass(TestDocument::class));
+
+        $expected = [
+            'similarity' => [
+                'my_custom_similarity' => [
+                    'type' => 'DFR',
+                    'basic_model' => 'g',
+                    'after_effect' => 'l',
+                    'normalization' => 'h2',
+                    'normalization.h2.c' => '3.0',
+                ],
+            ],
+            // 'my_unused_similarity' must not be there because it is not used
+        ];
+
+        $this->assertEquals($expected, $similarity);
+    }
 }

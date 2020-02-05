@@ -33,6 +33,7 @@ class TestDocument
      * @ES\Property(
      *  type="text",
      *  name="title",
+     *  similarity="my_custom_similarity",
      *  fields={
      *    "raw"={"type"="keyword"},
      *    "increment"={"type"="text", "analyzer"="incrementalAnalyzer"},
