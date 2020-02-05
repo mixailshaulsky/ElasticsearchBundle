@@ -240,8 +240,10 @@ abstract class AbstractResultsIterator implements \Countable, \Iterator
 
     /**
      * Returns score of current hit.
+     * @param bool $asFloat
+     * @return int
      */
-    public function getDocumentScore(): int
+    public function getDocumentScore(bool $asFloat = false): int
     {
         if (!$this->valid()) {
             throw new \LogicException('Document score is available only while iterating over results.');
@@ -249,6 +251,10 @@ abstract class AbstractResultsIterator implements \Countable, \Iterator
 
         if (!isset($this->documents[$this->key]['_score'])) {
             return null;
+        }
+
+        if ($asFloat) {
+            return (float) $this->documents[$this->key]['_score'];
         }
 
         return (int) $this->documents[$this->key]['_score'];
