@@ -24,6 +24,7 @@ class Configuration implements ConfigurationInterface
     const ONGR_PROFILER_CONFIG = 'ongr.esb.profiler';
     const ONGR_LOGGER_CONFIG = 'ongr.esb.logger';
     const ONGR_ANALYSIS_CONFIG = 'ongr.esb.analysis';
+    const ONGR_SIMILARITY_CONFIG = 'ongr.esb.similarity';
     const ONGR_INDEXES = 'ongr.esb.indexes';
     const ONGR_DEFAULT_INDEX = 'ongr.esb.default_index';
     const ONGR_INDEXES_OVERRIDE = 'ongr.esb.indexes_override';
@@ -76,6 +77,14 @@ class Configuration implements ConfigurationInterface
                 ->prototype('variable')->end()
             ->end()
 
+            ->arrayNode('similarity')
+                ->defaultValue([])
+                ->prototype('variable')->end()
+                ->info(
+                    'In case you want to specific parameters how matching documents to be scored.'
+                )
+            ->end()
+
             ->append($this->getAnalysisNode())
 
             ->end();
@@ -89,7 +98,7 @@ class Configuration implements ConfigurationInterface
         $node = $builder->root('analysis');
 
         $node
-            ->info('Defines analyzers, normalizers, tokenizers and filters')
+            ->info('Defines analyzers, normalizers, tokenizers, similarities and filters')
             ->addDefaultsIfNotSet()
             ->children()
                 ->arrayNode('tokenizer')

@@ -36,13 +36,15 @@ class DocumentParser
     private $reader;
     private $properties = [];
     private $analysisConfig = [];
+    private $similarityConfig = [];
     private $cache;
 
-    public function __construct(Reader $reader, Cache $cache, array $analysisConfig = [])
+    public function __construct(Reader $reader, Cache $cache, array $analysisConfig = [], array $similarityConfig = [])
     {
         $this->reader = $reader;
         $this->cache = $cache;
         $this->analysisConfig = $analysisConfig;
+        $this->similarityConfig = $similarityConfig;
 
         #Fix for annotations loader until doctrine/annotations 2.0 will be released with the full autoload support.
         AnnotationRegistry::registerLoader('class_exists');
@@ -98,6 +100,7 @@ class DocumentParser
 
         $settings = $document->getSettings();
         $settings['analysis'] = $this->getAnalysisConfig($class);
+        $settings['similarity'] = $this->getSimilarityConfig($class);
 
         return array_filter(array_map('array_filter', [
             'settings' => $settings,
@@ -157,6 +160,7 @@ class DocumentParser
                     $fieldMapping['analyzer'] = $annotation->analyzer;
                     $fieldMapping['search_analyzer'] = $annotation->searchAnalyzer;
                     $fieldMapping['search_quote_analyzer'] = $annotation->searchQuoteAnalyzer;
+                    $fieldMapping['similarity'] = $annotation->similarity;
                 }
 
                 if ($annotation instanceof Embedded) {
@@ -284,6 +288,22 @@ class DocumentParser
                 if (isset($this->analysisConfig[$type][$listItem])) {
                     $config[$type][$listItem] = $this->analysisConfig[$type][$listItem];
                 }
+            }
+        }
+
+        return $config;
+    }
+
+    public function getSimilarityConfig(\ReflectionClass $class): array
+    {
+        $config = [];
+        $mapping = $this->getClassMetadata($class);
+
+        $similarities = $this->getListFromArrayByKey('similarity', $mapping);
+
+        foreach ($similarities as $similarity) {
+            if (isset($this->similarityConfig[$similarity])) {
+                $config[$similarity] = $this->similarityConfig[$similarity];
             }
         }
 

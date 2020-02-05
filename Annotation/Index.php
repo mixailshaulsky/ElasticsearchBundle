@@ -50,4 +50,9 @@ final class Index extends AbstractAnnotation
      *   need to define an alias name. If default is not set the first index found will be set as default one.
      */
     public $default = false;
+
+    /**
+     * You can specify some custom similarities for your index.
+     */
+    public $similarity;
 }

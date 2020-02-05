@@ -45,6 +45,7 @@ class ONGRElasticsearchExtension extends Extension
 
         $container->setParameter(Configuration::ONGR_INDEXES_OVERRIDE, $config['indexes']);
         $container->setParameter(Configuration::ONGR_ANALYSIS_CONFIG, $config['analysis']);
+        $container->setParameter(Configuration::ONGR_SIMILARITY_CONFIG, $config['similarity']);
         $container->setParameter(Configuration::ONGR_SOURCE_DIR, $config['source_directories']);
     }
 }
